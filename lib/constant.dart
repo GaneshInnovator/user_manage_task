@@ -3,7 +3,7 @@
 var APP_NAME = "ECOM Products";
 
 //API URL
-const BASE_URL= "https://dev1.velsscript.online/api";
+const BASE_URL= "https://api.virgincodes.com/api";
 
 //API
 const getALLProducts = "$BASE_URL/deleteUser";
