@@ -1,0 +1,54 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+type Mutation {
+  registerUser(name: String!, email: String!, password: String!, childname: String, childage: Int): UserResponse!
+  loginUser(email: String!, password: String!): UserResponse!
+  changePassword(auth: String!, oldPassword: String!, newPassword: String!): UserResponse!
+  forgetPassword(email: String!, newPassword: String!): UserResponse!
+  setPin(auth: String!, pin: String!): UserResponse!
+  disablePin(auth: String!): UserResponse!
+  loginWithPin(auth: String!, pin: String!): UserResponse!
+  resetPin(auth: String!, newPin: String!): UserResponse!
+  activatePin(auth: String!): UserResponse!
+  editUserProfile(auth: String!, name: String, email: String, childname: String, childage: Int): UserResponse!
+}
+
+type PinStatusResponse {
+  status: Int!
+  message: String!
+  pinStatus: String!
+  setUserPin: Boolean
+}
+
+type Query {
+  getUserByToken(auth: String!): UserResponse!
+  verifyPinStatus(auth: String!): PinStatusResponse!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  childname: String
+  childage: Int
+  auth: String!
+  image: String
+  setUserPin: Boolean
+}
+
+type UserResponse {
+  status: Int!
+  message: String!
+  user: User
+}
+

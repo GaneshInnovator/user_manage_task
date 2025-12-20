@@ -1,0 +1,27 @@
+mutation RegisterUser(
+    $name: String!
+    $email: String!
+    $password: String!
+    $childname: String
+    $childage: Int
+) {
+    registerUser(
+        name: $name
+        email: $email
+        password: $password
+        childname: $childname
+        childage: $childage
+    ) {
+        status
+        message
+        user {
+            id
+            name
+            email
+            password
+            childname
+            childage
+            auth
+        }
+    }
+}
