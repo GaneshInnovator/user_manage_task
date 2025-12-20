@@ -5,15 +5,21 @@ import '../../controllers/home_main/product_controller.dart';
 import '../../widgtes/category_chip.dart';
 import '../../widgtes/product_card.dart';
 
-class SearchPage extends StatelessWidget {
-  SearchPage({super.key});
+class ProductPage extends StatefulWidget {
+  ProductPage({super.key});
 
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
   final ProductController controller = Get.find();
+
   final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -56,7 +62,6 @@ class SearchPage extends StatelessWidget {
             ),
           ),
 
-          /// 🔍 FILTER BAR
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: Row(
@@ -72,8 +77,6 @@ class SearchPage extends StatelessWidget {
               ],
             ),
           ),
-
-          /// 📊 RESULT COUNT
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Obx(() => Text(
@@ -87,7 +90,6 @@ class SearchPage extends StatelessWidget {
 
           const SizedBox(height: 6),
 
-          /// 🧴 PRODUCT GRID
           Expanded(
             child: Obx(() {
               if (controller.isLoading.value &&
@@ -126,7 +128,6 @@ class SearchPage extends StatelessWidget {
         ],
       ),
 
-      /// 🧭 BOTTOM NAVIGATION
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
         type: BottomNavigationBarType.fixed,
@@ -142,8 +143,7 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  /// 🔽 SORT BOTTOM SHEET
-  void _showSortSheet(BuildContext context) {
+   void _showSortSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
