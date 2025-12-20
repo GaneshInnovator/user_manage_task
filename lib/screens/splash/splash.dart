@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kidsflutter_app/screens/auth/login.dart';
 
 import '../../resources/app_assets.dart';
 
@@ -20,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       const Duration(seconds: 2),
           () {
-        Get.to(LoginScreen());
+        // Get.to(LoginScreen());
       },
     );
   }

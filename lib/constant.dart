@@ -1,14 +1,10 @@
 
 
-var APP_NAME = "Smile Kids";
+var APP_NAME = "ECOM Products";
 
 //API URL
-const API_URL= "https://dev1.velsscript.online/api";
-const GRAPHQL_URL = "$API_URL/graphql";
-const UPLOAD_URL = "$API_URL/upload";
+const BASE_URL= "https://dev1.velsscript.online/api";
 
 //API
-const deleteUser = "$API_URL/deleteUser";
-const sendOTP = "$API_URL/send-otp";
-const verifyOTP = "$API_URL/verify-otp";
-const getProfileImage = "$API_URL/getProfileImage?auth=";
+const getALLProducts = "$BASE_URL/deleteUser";
+const searchProducts = "$BASE_URL/send-otp";

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:kidsflutter_app/binding/auth_binding.dart';
 import 'package:kidsflutter_app/binding/main_binding.dart';
 import 'package:kidsflutter_app/pref/app_preference.dart';
 import 'package:kidsflutter_app/resources/app_assets.dart';
@@ -39,7 +38,7 @@ class App  extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: APP_NAME,
       home: const SplashScreen(),
-      initialBinding: AuthBinding(),
+      initialBinding: MainBinding(),
     );
   }
 

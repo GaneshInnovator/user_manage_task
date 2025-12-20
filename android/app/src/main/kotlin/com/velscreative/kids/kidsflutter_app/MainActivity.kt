@@ -1,4 +1,4 @@
-package com.velscreative.smilekids
+package com.ecomtest.pro
 
 import io.flutter.embedding.android.FlutterActivity
 

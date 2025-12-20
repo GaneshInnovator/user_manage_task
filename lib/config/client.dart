@@ -1,37 +1,16 @@
-import 'dart:convert';
-
-import 'package:ferry/ferry.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:dio/dio.dart';
 import 'package:kidsflutter_app/constant.dart';
-import 'package:gql_http_link/gql_http_link.dart';
 
-import '../pref/app_preference.dart';
+class ApiClient {
+  final Dio dio = Dio(
+    BaseOptions(
+      baseUrl: BASE_URL,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+    ),
+  );
 
-final AppPreference appPreference = Get.find();
-
-HttpLink link = HttpLink(GRAPHQL_URL,
-    defaultHeaders: {"auth": appPreference.authToken ?? ""});
-
-class FerryLoggerClient extends Client {
-  FerryLoggerClient({Key? key}) : super(link: link);
-  static Client? client;
-
-  static Stream<OperationResponse<dynamic, dynamic>> makeRequest(OperationRequest<dynamic, dynamic> request) {
-    FerryLoggerClient.client?.requestController.close();
-    client = Client(link: link, defaultFetchPolicies: {
-      OperationType.query: FetchPolicy.NetworkOnly,
-      OperationType.mutation: FetchPolicy.NetworkOnly,
-      OperationType.subscription: FetchPolicy.NetworkOnly
-    });
-    const JsonEncoder _encoder = JsonEncoder.withIndent('');
-    var response = client?.request(request);
-    Get.printInfo(info: "Response : " + response.toString());
-    response?.listen((response) {
-      Get.printInfo(info: _encoder.convert(response.data));
-    }, onError: (error) {
-      Get.printInfo(info: "Getting Error" + error);
-    });
-    return response!;
+  Future<Response> get(String path, {Map<String, dynamic>? query}) {
+    return dio.get(path, queryParameters: query);
   }
 }

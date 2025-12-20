@@ -1,6 +1,6 @@
-# kidsflutter_app
+# ecomflutter_app
 
-A kids app flutter project.
+A Ecom Products app flutter project.
 
 ## Getting Started
 
