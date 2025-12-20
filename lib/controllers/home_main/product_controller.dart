@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:ecompro_app/controllers/base_controller.dart';
 
 import '../../config/client.dart';
+import '../../model/product_model.dart';
 
 class ProductController extends BaseController {
   final ApiClient api = ApiClient();
@@ -13,36 +14,32 @@ class ProductController extends BaseController {
   var sort = "createdAt:desc";
   var searchQuery = "";
 
-  Future<void> fetchProducts({bool reset = false}) async {
-    if (reset) {
-      page = 1;
-      products.clear();
-    }
-
-    isLoading.value = true;
-
+  Future<List<ProductModel>> fetchProducts({
+    int page = 1,
+    String search = '',
+  }) async {
     final response = await api.get(
-      "/admin/products",
+      '/store/product',
       query: {
-        "page": page,
-        "limit": 20,
-        "sort": sort,
-        "searchFields": "name",
-        "search": searchQuery,
+        'page': page,
+        'limit': 20,
+        'sort': 'createdAt:desc',
+        'searchFields': 'name',
+        'search': search,
       },
     );
 
-    products.addAll(response.data['data']);
-    isLoading.value = false;
+    final List list = response.data['data'];
+    return list.map((e) => ProductModel.fromJson(e)).toList();
   }
 
   void onSearch(String query) {
     searchQuery = query;
-    fetchProducts(reset: true);
+    fetchProducts();
   }
 
   void onSortChange(String value) {
     sort = value;
-    fetchProducts(reset: true);
+    fetchProducts();
   }
 }
