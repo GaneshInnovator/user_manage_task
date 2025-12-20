@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "851697863511",
+    "project_id": "kidsflutterapp-3122f",
+    "storage_bucket": "kidsflutterapp-3122f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851697863511:android:1c2f8c75f0fd46be504c12",
+        "android_client_info": {
+          "package_name": "com.velscreative.smilekids"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzDwV5JqjMgadiKtnOb_7Jr1L8azm5Hn4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
