@@ -1,45 +1,194 @@
-import 'package:get/get.dart';
-import 'package:ecompro_app/controllers/base_controller.dart';
-
-import '../../config/client.dart';
+import 'dart:convert';
+import 'package:ecompro_app/constant.dart';
+import 'package:http/http.dart' as http;
 import '../../model/product_model.dart';
 
-class ProductController extends BaseController {
-  final ApiClient api = ApiClient();
+class ProductController {
 
-  var products = [].obs;
-  var isLoading = false.obs;
 
-  var page = 1;
-  var sort = "createdAt:desc";
-  var searchQuery = "";
-
-  Future<List<ProductModel>> fetchProducts({
-    int page = 1,
-    String search = '',
-  }) async {
-    final response = await api.get(
-      '/store/product',
-      query: {
-        'page': page,
-        'limit': 20,
-        'sort': 'createdAt:desc',
-        'searchFields': 'name',
+  Future<List<ProductModel>> fetchAllProducts({String search = ''}) async {
+    try {
+      final queryParams = {
         'search': search,
-      },
-    );
+      };
 
-    final List list = response.data['data'];
-    return list.map((e) => ProductModel.fromJson(e)).toList();
+      final uri = Uri.parse('$BASE_URL/store/product').replace(
+        queryParameters: queryParams,
+      );
+
+      print('Fetching products from: $uri');
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ).timeout(
+        const Duration(seconds: 15),
+        onTimeout: () {
+          throw Exception('Request timeout');
+        },
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+
+        List<dynamic> productsJson;
+
+        if (jsonData is Map) {
+          if (jsonData.containsKey('data')) {
+            if (jsonData['data'] is List) {
+              productsJson = jsonData['data'];
+              print("productsJson: yes12: ${productsJson}");
+            } else if (jsonData['data'] is Map &&
+                jsonData['data'].containsKey('items')) {
+              productsJson = jsonData['data']['items'];
+            } else if (jsonData['data'] is Map &&
+                jsonData['data'].containsKey('products')) {
+              productsJson = jsonData['data']['products'];
+            } else {
+              productsJson = [];
+            }
+          } else if (jsonData.containsKey('products')) {
+            productsJson = jsonData['products'];
+          } else if (jsonData.containsKey('items')) {
+            productsJson = jsonData['items'];
+          } else {
+            productsJson = [];
+          }
+        } else if (jsonData is List) {
+          productsJson = jsonData;
+        } else {
+          productsJson = [];
+        }
+
+        return productsJson
+            .map((json) => ProductModel.fromJson(json))
+            .toList();
+      } else if (response.statusCode == 500) {
+        final errorData = json.decode(response.body);
+        final errorMessage = errorData['message'] ?? 'Server error occurred';
+        print('Server error: $errorMessage');
+        throw Exception('Server is experiencing issues. Please try again later.');
+      } else {
+        throw Exception('Failed to load products: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error in fetchProducts: $e');
+      rethrow;
+    }
   }
 
-  void onSearch(String query) {
-    searchQuery = query;
-    fetchProducts();
+  Future<List<ProductModel>> fetchProducts({String search = ''}) async {
+    try {
+      final queryParams = {
+        'search': search,
+      };
+
+      final uri = Uri.parse('$BASE_URL/store/product').replace(
+        queryParameters: queryParams,
+      );
+
+      print('Fetching products from: $uri');
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ).timeout(
+        const Duration(seconds: 15),
+        onTimeout: () {
+          throw Exception('Request timeout');
+        },
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+
+        List<dynamic> productsJson;
+
+        if (jsonData is Map) {
+          if (jsonData.containsKey('data')) {
+            if (jsonData['data'] is List) {
+              productsJson = jsonData['data'];
+            } else if (jsonData['data'] is Map &&
+                jsonData['data'].containsKey('items')) {
+              productsJson = jsonData['data']['items'];
+            } else if (jsonData['data'] is Map &&
+                jsonData['data'].containsKey('products')) {
+              productsJson = jsonData['data']['products'];
+            } else {
+              productsJson = [];
+            }
+          } else if (jsonData.containsKey('products')) {
+            productsJson = jsonData['products'];
+          } else if (jsonData.containsKey('items')) {
+            productsJson = jsonData['items'];
+          } else {
+            productsJson = [];
+          }
+        } else if (jsonData is List) {
+          productsJson = jsonData;
+        } else {
+          productsJson = [];
+        }
+
+        return productsJson
+            .map((json) => ProductModel.fromJson(json))
+            .toList();
+      } else if (response.statusCode == 500) {
+        final errorData = json.decode(response.body);
+        final errorMessage = errorData['message'] ?? 'Server error occurred';
+        print('Server error: $errorMessage');
+        throw Exception('Server is experiencing issues. Please try again later.');
+      } else {
+        throw Exception('Failed to load products: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error in fetchProducts: $e');
+      rethrow;
+    }
   }
 
-  void onSortChange(String value) {
-    sort = value;
-    fetchProducts();
+  Future<List<ProductModel>> searchProducts(String query) async {
+    try {
+      final uri = Uri.parse('$BASE_URL/store/search').replace(
+        queryParameters: {
+          'q': query,
+        },
+      );
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 15));
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        List<dynamic> productsJson = jsonData['products'] ?? jsonData['data'] ?? [];
+
+        return productsJson
+            .map((json) => ProductModel.fromJson(json))
+            .toList();
+      } else {
+        throw Exception('Search failed');
+      }
+    } catch (e) {
+      print('Error in searchProducts: $e');
+      return [];
+    }
   }
+
 }
