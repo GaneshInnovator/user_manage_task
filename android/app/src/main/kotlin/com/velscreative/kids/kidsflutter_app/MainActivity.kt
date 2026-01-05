@@ -1,4 +1,4 @@
-package com.ecomtest.pro
+package com.usermanage.pro
 
 import io.flutter.embedding.android.FlutterActivity
 

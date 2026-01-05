@@ -1,6 +1,6 @@
 # ecomflutter_app
 
-A Ecom Products app flutter project.
+A User Manage app flutter project.
 
 ## Getting Started
 

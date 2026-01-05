@@ -1,9 +1,9 @@
 
 
-var APP_NAME = "ECOM Products";
+var APP_NAME = "User Manage";
 
 //API URL
-const BASE_URL= "https://api.virgincodes.com/api";
+const BASE_URL= "https://api.virgincodes.com";
 
 //API
 const getALLProducts = "$BASE_URL/deleteUser";

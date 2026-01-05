@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Smile Kids"
+        android:label="User Manage"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

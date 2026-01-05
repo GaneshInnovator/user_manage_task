@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:ecompro_app/constant.dart';
+import 'package:usermanage_app/constant.dart';
+import 'package:hive/hive.dart';
 
 class ApiClient {
   static final ApiClient _instance = ApiClient._internal();
@@ -28,6 +29,7 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await _getToken();
+          print("token: $token");
           if (token != null) {
             options.headers["Authorization"] = "Bearer $token";
           }
@@ -57,6 +59,7 @@ class ApiClient {
       String path, {
         Map<String, dynamic>? query,
       }) async {
+    print("path: ${path} ${query}");
     return dio.get(path, queryParameters: query);
   }
 
@@ -84,8 +87,7 @@ class ApiClient {
 
 
   Future<String?> _getToken() async {
-    // return Hive.box('auth').get('token');
-    return null; // Replace with real token logic
+    return null;
   }
 
 }
