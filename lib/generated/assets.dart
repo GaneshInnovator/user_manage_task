@@ -5,5 +5,6 @@ class Assets {
   static const String drawableArrowBack = 'res/drawable/arrow_back.svg';
   static const String drawableRightArrow = 'res/drawable/right_arrow.svg';
   static const String drawableSplash = 'res/drawable/splash.png';
+  static const String drawableUmLogo = 'res/drawable/um_logo.png';
 
 }
