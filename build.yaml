@@ -4,9 +4,9 @@ targets:
       ferry_generator|graphql_builder:
         enabled: true
         options:
-          schema: ecompro_app|lib/graphql/schema.graphql
+          schema: usermanage_app|lib/graphql/schema.graphql
 
       ferry_generator|serializer_builder:
         enabled: true
         options:
-          schema: ecompro_app|lib/graphql/schema.graphql
+          schema: usermanage_app|lib/graphql/schema.graphql

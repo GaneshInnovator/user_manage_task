@@ -1,21 +1,21 @@
-import 'package:ecompro_app/controllers/home_main/product_controller.dart';
+import 'package:usermanage_app/controllers/home_main/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../model/product_model.dart';
-import '../../widgtes/product_card.dart';
+import '../../model/user_fetch_model.dart';
 
-class ProductSearchPage extends StatefulWidget {
-  const ProductSearchPage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<ProductSearchPage> createState() => _ProductSearchPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _ProductSearchPageState extends State<ProductSearchPage> {
-  final ProductController controller = ProductController();
+class _HomePageState extends State<HomePage> {
+  final HomeController controller = Get.find();
   final TextEditingController _searchCtrl = TextEditingController();
 
-  List<ProductModel> products = [];
+  List<UserFetchModel> products = [];
   bool loading = false;
   String currentSearch = '';
   int _selectedIndex = 0;
@@ -37,12 +37,6 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       controller.fetchProducts();
       return;
     }
-
-    setState(() {
-      loading = true;
-      currentSearch = search;
-      errorMessage = null;
-    });
 
     try {
       products = await controller.fetchProducts(search: search);
@@ -369,16 +363,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       );
     }
 
-    return GridView.builder(
+    return Container(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
-      itemCount: products.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.62,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 16,
-      ),
-      itemBuilder: (_, i) => ProductCard(product: products[i]),
     );
   }
 

@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:ecompro_app/binding/main_binding.dart';
-import 'package:ecompro_app/pref/app_preference.dart';
-import 'package:ecompro_app/resources/app_assets.dart';
-import 'package:ecompro_app/resources/app_colors.dart';
-import 'package:ecompro_app/resources/app_dimen.dart';
-import 'package:ecompro_app/resources/app_fonts.dart';
+import 'package:usermanage_app/binding/main_binding.dart';
+import 'package:usermanage_app/pref/app_preference.dart';
+import 'package:usermanage_app/resources/app_assets.dart';
+import 'package:usermanage_app/resources/app_colors.dart';
+import 'package:usermanage_app/resources/app_dimen.dart';
+import 'package:usermanage_app/resources/app_fonts.dart';
 import 'package:intl/intl.dart';
 
-import 'package:ecompro_app/screens/splash/splash.dart';
+import 'package:usermanage_app/screens/splash/splash.dart';
 
 import 'constant.dart';
 

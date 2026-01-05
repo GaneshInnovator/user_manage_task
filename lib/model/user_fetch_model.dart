@@ -1,4 +1,4 @@
-class ProductModel {
+class UserFetchModel {
   final String id;
   final String title;
   final String? subtitle;
@@ -13,7 +13,7 @@ class ProductModel {
   final String? description;
   final bool? isWishlisted;
 
-  ProductModel({
+  UserFetchModel({
     required this.id,
     required this.title,
     this.subtitle,
@@ -29,7 +29,7 @@ class ProductModel {
     this.isWishlisted,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
+  factory UserFetchModel.fromJson(Map<String, dynamic> json) {
     String getId() {
       return json['id']?.toString() ??
           json['productId']?.toString() ??
@@ -210,7 +210,7 @@ class ProductModel {
       return false;
     }
 
-    return ProductModel(
+    return UserFetchModel(
       id: getId(),
       title: getTitle(),
       subtitle: json['subtitle'] ?? json['description'] ?? json['shortDescription'],
@@ -245,7 +245,7 @@ class ProductModel {
     };
   }
 
-  ProductModel copyWith({
+  UserFetchModel copyWith({
     String? id,
     String? title,
     String? subtitle,
@@ -260,7 +260,7 @@ class ProductModel {
     String? description,
     bool? isWishlisted,
   }) {
-    return ProductModel(
+    return UserFetchModel(
       id: id ?? this.id,
       title: title ?? this.title,
       subtitle: subtitle ?? this.subtitle,

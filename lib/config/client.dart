@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:ecompro_app/constant.dart';
+import 'package:usermanage_app/constant.dart';
 import 'package:hive/hive.dart';
 
 class ApiClient {

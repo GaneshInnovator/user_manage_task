@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'package:ecompro_app/constant.dart';
+import 'package:usermanage_app/constant.dart';
 import 'package:http/http.dart' as http;
-import '../../model/product_model.dart';
+import '../../model/user_fetch_model.dart';
 
-class ProductController {
+class HomeController {
 
 
-  Future<List<ProductModel>> fetchAllProducts({String search = ''}) async {
+  Future<List<UserFetchModel>> fetchAllProducts({String search = ''}) async {
     try {
       final queryParams = {
         'search': search,
@@ -67,7 +67,7 @@ class ProductController {
         }
 
         return productsJson
-            .map((json) => ProductModel.fromJson(json))
+            .map((json) => UserFetchModel.fromJson(json))
             .toList();
       } else if (response.statusCode == 500) {
         final errorData = json.decode(response.body);
@@ -83,7 +83,7 @@ class ProductController {
     }
   }
 
-  Future<List<ProductModel>> fetchProducts({String search = ''}) async {
+  Future<List<UserFetchModel>> fetchProducts({String search = ''}) async {
     try {
       final queryParams = {
         'search': search,
@@ -143,7 +143,7 @@ class ProductController {
         }
 
         return productsJson
-            .map((json) => ProductModel.fromJson(json))
+            .map((json) => UserFetchModel.fromJson(json))
             .toList();
       } else if (response.statusCode == 500) {
         final errorData = json.decode(response.body);
@@ -159,7 +159,7 @@ class ProductController {
     }
   }
 
-  Future<List<ProductModel>> searchProducts(String query) async {
+  Future<List<UserFetchModel>> searchProducts(String query) async {
     try {
       final uri = Uri.parse('$BASE_URL/store/search').replace(
         queryParameters: {
@@ -180,7 +180,7 @@ class ProductController {
         List<dynamic> productsJson = jsonData['products'] ?? jsonData['data'] ?? [];
 
         return productsJson
-            .map((json) => ProductModel.fromJson(json))
+            .map((json) => UserFetchModel.fromJson(json))
             .toList();
       } else {
         throw Exception('Search failed');
