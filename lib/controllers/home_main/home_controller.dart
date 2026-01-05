@@ -6,15 +6,10 @@ import '../../model/user_fetch_model.dart';
 class HomeController {
 
 
-  Future<List<UserFetchModel>> fetchAllProducts({String search = ''}) async {
+  Future<List<UserFetchModel>> fetchAllUsers() async {
     try {
-      final queryParams = {
-        'search': search,
-      };
 
-      final uri = Uri.parse('$BASE_URL/store/product').replace(
-        queryParameters: queryParams,
-      );
+      final uri = Uri.parse(getALLUsers);
 
       print('Fetching products from: $uri');
 
@@ -89,7 +84,7 @@ class HomeController {
         'search': search,
       };
 
-      final uri = Uri.parse('$BASE_URL/store/product').replace(
+      final uri = Uri.parse('$BASE_API_URL/store/product').replace(
         queryParameters: queryParams,
       );
 
@@ -161,7 +156,7 @@ class HomeController {
 
   Future<List<UserFetchModel>> searchProducts(String query) async {
     try {
-      final uri = Uri.parse('$BASE_URL/store/search').replace(
+      final uri = Uri.parse('$BASE_API_URL/store/search').replace(
         queryParameters: {
           'q': query,
         },

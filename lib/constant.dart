@@ -3,8 +3,8 @@
 var APP_NAME = "User Manage";
 
 //API URL
-const BASE_URL= "https://api.virgincodes.com";
+const BASE_API_URL= "https://reqres.in/api";
 
 //API
-const getALLProducts = "$BASE_URL/deleteUser";
-const searchProducts = "$BASE_URL/send-otp";
+const getALLUsers = "$BASE_API_URL/users";
+const searchProducts = "$BASE_API_URL/send-otp";

@@ -28,8 +28,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   initOperation ()async {
-    products = await controller.fetchAllProducts(search: '');
-    setState(() => loading = false);
+    products = await controller.fetchAllUsers();
   }
 
   Future<void> fetch({String search = ''}) async {
