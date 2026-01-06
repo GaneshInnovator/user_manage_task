@@ -6,5 +6,8 @@ class Assets {
   static const String drawableRightArrow = 'res/drawable/right_arrow.svg';
   static const String drawableSplash = 'res/drawable/splash.png';
   static const String drawableUmLogo = 'res/drawable/um_logo.png';
+  static const String lottieLoader = 'assets/lottie/loader.json';
+  static const String lottieLoaderDark = 'assets/lottie/loader-dark.json';
+  static const String lottieRippleLoader = 'assets/lottie/ripple_loader.json';
 
 }

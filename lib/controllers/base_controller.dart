@@ -112,20 +112,22 @@ class BaseController extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
 
-  Widget showCenterLoading(context, [loadingFile, Size]) {
-    return Container(
-      width: Size ?? MediaQuery.of(context).size.width,
-      height: Size ?? MediaQuery.of(context).size.height,
-      color: Colors.transparent,
-      child: Center(
-        child: SizedBox(
-            width: Size ?? 150,
-            height: Size ?? 150,
-            child: Lottie.asset(
-              loadingFile ?? AppImages.lottieloader,
-              delegates: getLottieDelegates(loadingFile ?? AppImages.lottieloader),
-            )),
-      ),
+  Widget showCenterLoading(context, Color? color, [loadingFile, Size]) {
+    return Obx(
+        ()=> isLoading.value? Container(
+        width: Size ?? MediaQuery.of(context).size.width,
+        height: Size ?? MediaQuery.of(context).size.height,
+        color: color ?? Colors.transparent,
+        child: Center(
+          child: SizedBox(
+              width: Size ?? 150,
+              height: Size ?? 150,
+              child: Lottie.asset(
+                loadingFile ?? AppImages.lottieloader,
+                delegates: getLottieDelegates(loadingFile ?? AppImages.lottieloader),
+              )),
+        ),
+      ): SizedBox.shrink(),
     );
   }
 

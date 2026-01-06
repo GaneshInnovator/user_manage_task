@@ -40,4 +40,10 @@ flutter:
 
   assets:
     - res/drawable/
+    - assets/lottie/
+
+  fonts:
+    - family: Mulish
+      fonts:
+        - asset: fonts/Mulish-Regular.ttf
 

@@ -3,8 +3,14 @@
 var APP_NAME = "User Manage";
 
 //API URL
-const BASE_API_URL= "https://reqres.in/api";
+const BASE_API_URL= "https://user-manage-liard.vercel.app/api";
 
-//API
+//API ENDPOINTS
 const getALLUsers = "$BASE_API_URL/users";
-const searchProducts = "$BASE_API_URL/send-otp";
+
+const createUser = "$BASE_API_URL/createUser";
+
+const deleteUser = "$BASE_API_URL/deleteUser";
+
+const updateUserById = "$BASE_API_URL/updateUser";
+

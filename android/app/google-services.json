@@ -9,6 +9,25 @@
       "client_info": {
         "mobilesdk_app_id": "1:748971241712:android:780df0a25fe99fcd431235",
         "android_client_info": {
+          "package_name": "com.ecomtest.pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsKElrmaEkjMUxpX_Tp1zEs0S34TkzHAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748971241712:android:4aeb7df4be318171431235",
+        "android_client_info": {
           "package_name": "com.usermanage.pro"
         }
       },

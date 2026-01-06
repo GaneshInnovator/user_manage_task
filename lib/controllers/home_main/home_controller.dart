@@ -1,189 +1,81 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:usermanage_app/constant.dart';
 import 'package:http/http.dart' as http;
 import '../../model/user_fetch_model.dart';
+import '../base_controller.dart';
 
-class HomeController {
+class HomeController extends BaseController{
 
+  var users = <UserModel>[].obs;
+  var hasMore = true.obs;
+  var userId = "".obs;
+  var userProfile = Rxn<UserModel>();
 
-  Future<List<UserFetchModel>> fetchAllUsers() async {
-    try {
+  int page = 1;
+  final int pageSize = 10;
 
-      final uri = Uri.parse(getALLUsers);
+  var retry = false;
 
-      print('Fetching products from: $uri');
+  void fetchUsersModel() async {
+    if ((isLoading.value || !hasMore.value) && !retry) return;
 
-      final response = await http.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ).timeout(
-        const Duration(seconds: 15),
-        onTimeout: () {
-          throw Exception('Request timeout');
-        },
-      );
+    retry = false;
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+    isLoading.value = true;
 
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
+    final newUsers = await fetchUsers(
+      page: page,
+      pageSize: pageSize,
+    );
 
-        List<dynamic> productsJson;
-
-        if (jsonData is Map) {
-          if (jsonData.containsKey('data')) {
-            if (jsonData['data'] is List) {
-              productsJson = jsonData['data'];
-              print("productsJson: yes12: ${productsJson}");
-            } else if (jsonData['data'] is Map &&
-                jsonData['data'].containsKey('items')) {
-              productsJson = jsonData['data']['items'];
-            } else if (jsonData['data'] is Map &&
-                jsonData['data'].containsKey('products')) {
-              productsJson = jsonData['data']['products'];
-            } else {
-              productsJson = [];
-            }
-          } else if (jsonData.containsKey('products')) {
-            productsJson = jsonData['products'];
-          } else if (jsonData.containsKey('items')) {
-            productsJson = jsonData['items'];
-          } else {
-            productsJson = [];
-          }
-        } else if (jsonData is List) {
-          productsJson = jsonData;
-        } else {
-          productsJson = [];
-        }
-
-        return productsJson
-            .map((json) => UserFetchModel.fromJson(json))
-            .toList();
-      } else if (response.statusCode == 500) {
-        final errorData = json.decode(response.body);
-        final errorMessage = errorData['message'] ?? 'Server error occurred';
-        print('Server error: $errorMessage');
-        throw Exception('Server is experiencing issues. Please try again later.');
-      } else {
-        throw Exception('Failed to load products: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error in fetchProducts: $e');
-      rethrow;
+    if (newUsers.length < pageSize) {
+      hasMore.value = false;
     }
+
+    users.addAll(newUsers);
+    page++;
+    isLoading.value = false;
   }
 
-  Future<List<UserFetchModel>> fetchProducts({String search = ''}) async {
-    try {
-      final queryParams = {
-        'search': search,
-      };
+  void fetchUsersProfile() async {
+    isLoading.value = true;
 
-      final uri = Uri.parse('$BASE_API_URL/store/product').replace(
-        queryParameters: queryParams,
-      );
+    userProfile.value = await fetchUserById(
+      userId.value,
+    );
 
-      print('Fetching products from: $uri');
+    print("userProfile.value: ${userProfile.value} ${userId.value}");
 
-      final response = await http.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ).timeout(
-        const Duration(seconds: 15),
-        onTimeout: () {
-          throw Exception('Request timeout');
-        },
-      );
-
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-
-        List<dynamic> productsJson;
-
-        if (jsonData is Map) {
-          if (jsonData.containsKey('data')) {
-            if (jsonData['data'] is List) {
-              productsJson = jsonData['data'];
-            } else if (jsonData['data'] is Map &&
-                jsonData['data'].containsKey('items')) {
-              productsJson = jsonData['data']['items'];
-            } else if (jsonData['data'] is Map &&
-                jsonData['data'].containsKey('products')) {
-              productsJson = jsonData['data']['products'];
-            } else {
-              productsJson = [];
-            }
-          } else if (jsonData.containsKey('products')) {
-            productsJson = jsonData['products'];
-          } else if (jsonData.containsKey('items')) {
-            productsJson = jsonData['items'];
-          } else {
-            productsJson = [];
-          }
-        } else if (jsonData is List) {
-          productsJson = jsonData;
-        } else {
-          productsJson = [];
-        }
-
-        return productsJson
-            .map((json) => UserFetchModel.fromJson(json))
-            .toList();
-      } else if (response.statusCode == 500) {
-        final errorData = json.decode(response.body);
-        final errorMessage = errorData['message'] ?? 'Server error occurred';
-        print('Server error: $errorMessage');
-        throw Exception('Server is experiencing issues. Please try again later.');
-      } else {
-        throw Exception('Failed to load products: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error in fetchProducts: $e');
-      rethrow;
-    }
+    isLoading.value = false;
   }
 
-  Future<List<UserFetchModel>> searchProducts(String query) async {
-    try {
-      final uri = Uri.parse('$BASE_API_URL/store/search').replace(
-        queryParameters: {
-          'q': query,
-        },
-      );
 
-      final response = await http.get(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ).timeout(const Duration(seconds: 15));
+  Future<List<UserModel>> fetchUsers({
+    required int page,
+    required int pageSize,
+  }) async {
+    final url =
+        '$getALLUsers?pageSize=$pageSize&currentPage=$page';
 
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        List<dynamic> productsJson = jsonData['products'] ?? jsonData['data'] ?? [];
+    final res =await http.get(Uri.parse(url));
 
-        return productsJson
-            .map((json) => UserFetchModel.fromJson(json))
-            .toList();
-      } else {
-        throw Exception('Search failed');
-      }
-    } catch (e) {
-      print('Error in searchProducts: $e');
-      return [];
+    if (res.statusCode == 200) {
+      final List data = json.decode(res.body)['data'];
+      return data.map((e) => UserModel.fromJson(e)).toList();
     }
+    throw Exception('Failed to load users');
+  }
+
+  Future<UserModel> fetchUserById(String id) async {
+
+    final res = await http.get(Uri.parse('$getALLUsers?id=$id'));
+    print("resbody: ${res.body}");
+
+    if (res.statusCode == 200) {
+      return UserModel.fromJson(json.decode(res.body));
+    }
+    throw Exception('User not found');
   }
 
 }

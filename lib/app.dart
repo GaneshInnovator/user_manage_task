@@ -37,6 +37,7 @@ class App  extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: APP_NAME,
+      defaultTransition: Transition.leftToRight,
       home: const SplashScreen(),
       initialBinding: MainBinding(),
     );

@@ -5,55 +5,6 @@ import '../resources/app_colors.dart';
 
 LottieDelegates getLottieDelegates(String loader) {
   switch (loader) {
-    case "assets/lottie/empty_popular_services.json":
-      return LottieDelegates(
-        values: [
-          ValueDelegate.color(
-            const ['**', 'Layer 6', 'Group 5', '**'],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 7', 'Group 3', '**'],
-            value: darken(AppColors.primaryColor),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 7', 'Group 5', 'Group 3', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 7', 'Group 5', 'Group 1', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 8', '**'],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 9', 'Group 17', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 9', 'Group 15', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 9', 'Group 8', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 11', 'Group 12', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 11', 'Group 14', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-          ValueDelegate.color(
-            const ['**', 'Layer 11', 'Group 18', "**"],
-            value: lighten(AppColors.primaryColor, 0.2),
-          ),
-        ],
-      );
     case "assets/lottie/loader.json":
       return LottieDelegates(
         values: [
@@ -78,37 +29,6 @@ LottieDelegates getLottieDelegates(String loader) {
             const ['**', 'Кривые Layer 1', '**'],
             value: AppColors.primaryColor,
           ),
-        ],
-      );
-    case "assets/lottie/schedule_success.json":
-      return LottieDelegates(
-        values: [
-          ValueDelegate.color(
-            const ['**', 'vector 5 Outlines', 'Group 1', 'Path 1', '**'],
-            value: AppColors.primaryColor,
-          ),
-          ValueDelegate.color(
-            const ['**', 'vector 5 Outlines', 'Group 2', '**'],
-            value: AppColors.primaryColor,
-          ),
-          ValueDelegate.color(
-            const ['**', 'vector 5 Outlines', 'Group 3', '**'],
-            value: lighten(AppColors.primaryColor, 0.15),
-          ),
-          ValueDelegate.strokeColor(
-              const ['**', 'vector 5 Outlines', 'Group 4', "Stroke 1", '**'],
-              value: lighten(AppColors.primaryColor, 0.3)),
-          ValueDelegate.strokeColor(
-              const ['**', 'vector 5 Outlines', 'Group 5', "Stroke 1", '**'],
-              value: lighten(AppColors.primaryColor, 0.3)),
-          ValueDelegate.strokeColor(
-              const ['**', 'vector 5 Outlines', 'Group 6', "Stroke 1", '**'],
-              value: lighten(AppColors.primaryColor, 0.3)),
-          ValueDelegate.strokeColor(
-              const ['**', 'vector 5 Outlines', 'Group 7', "Stroke 1", '**'],
-              value: lighten(AppColors.primaryColor, 0.3)),
-          ValueDelegate.strokeColor(const ['**', 'Shape Layer 3', '**'],
-              value: lighten(AppColors.primaryColor, 0.1)),
         ],
       );
     case "assets/lottie/ripple_loader.json":

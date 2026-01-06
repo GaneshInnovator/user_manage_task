@@ -12,9 +12,9 @@ class AppColors {
 
   static Color constWhite = const Color(0xFFFFFFFF);
 
-  static Color primaryColor = const Color(0xFFDFA32A);
+  static Color primaryColor = const Color(0xFFD72846);
 
-  static Color secondaryColor = const Color(0xFFDFA32A);
+  static Color secondaryColor = const Color(0xFF24DBD4);
 
   static Color iconBgColor = const Color(0xFF000000);
 
@@ -32,8 +32,8 @@ class AppColors {
 
 
   changeToLight() {
-    primaryColor = const Color(0xFFDFA32A);
-    secondaryColor = const Color(0xFFDFA32A);
+    primaryColor = const Color(0xFFD72846);
+    secondaryColor = const Color(0xFF24DBD4);
     screenBGColor = const Color(0xFFFFFEF4);
     textColor = const Color(0xFF161616);
     white = const Color(0xFFFFFFFF);
@@ -45,8 +45,8 @@ class AppColors {
   }
 
   changeToDark() {
-    primaryColor = const Color(0xFFDFA32A);
-    secondaryColor = const Color(0xFFDFA32A);
+    primaryColor = const Color(0xFFD72846);
+    secondaryColor = const Color(0xFF24DBD4);
     screenBGColor = const Color(0xFF171D37);
     white = const Color(0xFF0E142F);
     textColor = const Color(0xFFC7D8EB);
