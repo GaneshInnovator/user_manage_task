@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:usermanage_app/constant.dart';
@@ -18,6 +19,8 @@ class HomeController extends BaseController{
   var retry = false;
 
   void fetchUsersModel() async {
+    if(retry) users.clear();
+
     if ((isLoading.value || !hasMore.value) && !retry) return;
 
     retry = false;
@@ -32,7 +35,6 @@ class HomeController extends BaseController{
     if (newUsers.length < pageSize) {
       hasMore.value = false;
     }
-
     users.addAll(newUsers);
     page++;
     isLoading.value = false;
