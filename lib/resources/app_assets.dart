@@ -6,11 +6,15 @@ class AppImages {
 
   static String lottieloader = "assets/lottie/loader.json";
 
+  static String deleteSvg = "res/drawable/delete.svg";
+
   changeToLightImage() {
     lottieloader = "assets/lottie/loader.json";
+    deleteSvg = "res/drawable/delete.svg";
   }
 
   changeToDarkImage() {
     lottieloader = "assets/lottie/loader-dark.json";
+    deleteSvg = "res/drawable/delete_dark.svg";
   }
 }

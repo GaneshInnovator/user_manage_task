@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:usermanage_app/controllers/home_main/home_controller.dart';
 import 'package:usermanage_app/controllers/user_controller/update_controller.dart';
+import 'package:usermanage_app/resources/app_assets.dart';
 import 'package:usermanage_app/resources/app_colors.dart';
 import 'package:usermanage_app/widgtes/custom_scaffold.dart';
 
@@ -45,6 +46,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             title: Text(g),
             value: g,
             groupValue: controller.gender.value,
+              activeColor: AppColors.secondaryColor,
             onChanged: (v) => controller.gender.value = v!,
           ),
         );
@@ -55,28 +57,56 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget actionButtons(String id) {
     return Obx(() => Column(
       children: [
-        SizedBox(
-          width: double.infinity,
-          height: 50,
-          child: ElevatedButton(
-            onPressed: controller.isLoading.value
-                ? null
-                : () => controller.updateUser(id),
-            child: const Text('Update User'),
+      SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: Material(
+        color: controller.isLoading.value
+            ? Colors.grey
+            : AppColors.secondaryColor,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(28),
+          onTap: controller.isLoading.value
+              ? null
+              : () => controller.updateUser(id),
+          child: Center(
+            child: Text(
+              'Update User',
+              style: TextStyle(
+                color: AppColors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
           ),
         ),
+      ),
+    ),
+
         const SizedBox(height: 12),
         SizedBox(
           width: double.infinity,
           height: 50,
           child: OutlinedButton(
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.red,
+              foregroundColor: AppColors.primaryColor,
+              side: BorderSide(
+                color: AppColors.primaryColor, // 🔹 Border color
+                width: 1.5,                    // 🔹 Border thickness
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14), // 🔹 Border radius
+              ),
             ),
             onPressed: () => showDeleteConfirm(id),
-            child: const Text('Delete User'),
+            child: const Text(
+              'Delete User',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
         ),
+
       ],
     ));
   }
@@ -99,6 +129,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     ));
   }
 
+  Widget showAction(){
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 18.0),
+      child: GestureDetector(
+        onTap: (){
+          showDeleteConfirm(widget.userId);
+        },
+        child: SvgPicture.asset(AppImages.deleteSvg,
+          height: 24,
+          width: 24,),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -106,6 +151,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         CustomScaffold(
           isShowAppBar: true,
           title: "User Profile",
+          action: showAction(),
           body: Obx(() {
             if (controller.isLoading.value) return const SizedBox();
 
