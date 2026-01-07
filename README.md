@@ -225,18 +225,16 @@ Ensure the following are installed on your system:
 ---
 
 ### 2️.Clone the Repository
-```bash
 git clone <our-github-repo-url>
 cd <project-folder-name>
 
 ### 3.Install Dependecies
-```bash
 flutter pub get
 
 ### 3.Run the project
 connect your device
-```bash
 flutter pub run
+
 
 
 
