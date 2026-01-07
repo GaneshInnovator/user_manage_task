@@ -43,9 +43,9 @@ class CreateUserController extends BaseController {
         result = false;
         showSnackBar("Unable to create user", Get.context);
       }
-    } catch (e) {
+    } on Exception catch (_){
       result = false;
-      showSnackBar( e.toString(), Get.context);
+      showSnackBar('Please check your network connection.', Get.context);
     } finally {
       isLoading.value = false;
     }

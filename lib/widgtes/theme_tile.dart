@@ -23,6 +23,7 @@ class ThemeTile extends StatelessWidget {
       leading: Icon(icon, color: onSelected ? AppColors.primaryColor : AppColors.textColor,),
       title: Text(label, style: TextStyle(color: onSelected ? AppColors.primaryColor : AppColors.textColor),),
       onTap: onTap,
+      trailing: Icon(Icons.chevron_right, color: onSelected ? AppColors.primaryColor : AppColors.textColor,),
     );
   }
 }

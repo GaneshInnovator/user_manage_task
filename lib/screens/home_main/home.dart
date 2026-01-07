@@ -1,14 +1,17 @@
 import 'dart:async';
 
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:usermanage_app/binding/user_binding.dart';
 import 'package:usermanage_app/constant.dart';
 import 'package:usermanage_app/controllers/home_main/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:usermanage_app/resources/app_assets.dart';
 import 'package:usermanage_app/resources/app_colors.dart';
 import 'package:usermanage_app/resources/app_dimen.dart';
 import 'package:usermanage_app/resources/app_fonts.dart';
 import 'package:usermanage_app/screens/create_user/create_user.dart';
+import 'package:usermanage_app/widgtes/custom_container.dart';
 import 'package:usermanage_app/widgtes/custom_scaffold.dart';
 
 import '../../app.dart';
@@ -96,7 +99,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(28),
-                  border: Border.all(color: Colors.black, width: 2),
+                  border: Border.all(color: AppColors.black, width: 1.8),
                 ),
                 child: Container(
                   height: Get.height * 0.05,
@@ -105,14 +108,23 @@ class _HomePageState extends State<HomePage> {
                     color: AppColors.secondaryColor,
                     borderRadius: BorderRadius.circular(26),
                   ),
-                  child: Center(
-                    child: Text(
-                      "ADD",
-                      style: TextStyle(
-                          color: AppColors.constWhite,
-                          fontSize: AppDimen.textSizeH4
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add_sharp,
+                        color: AppColors.constWhite,
                       ),
-                    ),
+                      Text(
+                        "ADD",
+                        style: TextStyle(
+                            color: AppColors.constWhite,
+                            fontSize: AppDimen.textSizeH4,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -129,12 +141,12 @@ class _HomePageState extends State<HomePage> {
       controller.hasMore.value = true;
       controller.page = 1;
       controller.fetchUsersModel();
-    }, icon: Icon(Icons.refresh_outlined, size: 28,));
+    }, icon: Icon(Icons.refresh_outlined, size: 28, color: AppColors.iconBgColor,));
   }
   
   Widget bodyContent(){
     return Obx(() {
-      return ListView.builder(
+      return controller.users.isNotEmpty ?ListView.builder(
         controller: scrollController,
         itemCount: controller.users.length + 1,
         itemBuilder: (context, index) {
@@ -174,19 +186,40 @@ class _HomePageState extends State<HomePage> {
               ),
               title: Text(
                 user.name,
-                style: TextStyle(fontWeight: FontWeight.w600, fontFamily: AppFont.font),
+                style: TextStyle(fontWeight: FontWeight.w600, fontFamily: AppFont.font, color: AppColors.black),
               ),
-              subtitle: Text(user.email, style: TextStyle(fontWeight: FontWeight.w600, fontFamily: AppFont.font),),
+              subtitle: Text(user.email, style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.black, fontFamily: AppFont.font),),
               onTap: () {
                 controller.userId.value = user.id;
-                Get.to(() => UserProfileScreen(userId: user.id), binding: UserBinding());
+                Get.to(() => UserProfileScreen(userId: user.id), binding: UserBinding())?.then((value){
+                  if(value == true){
+                    controller.retry = true;
+                    controller.hasMore.value = true;
+                    controller.page = 1;
+                    controller.fetchUsersModel();
+                  }
+                });
               },
             ),
           );
 
         },
-      );
-    });
+      ): controller.isLoading.value ? SizedBox.shrink(): showEmptyWidget();
+
+    }
+    );
+  }
+
+  Widget showEmptyWidget(){
+    return Center(
+      child: CustomContainer(
+        body: SvgPicture.asset(
+          AppImages.noUserSvg,
+          height: Get.height * 0.29,
+          width: Get.width,
+        ),
+      ),
+    );
   }
 
   void showThemeBottomSheet(BuildContext context) {
@@ -260,8 +293,6 @@ class _HomePageState extends State<HomePage> {
       isScrollControlled: true,
     );
   }
-
-
 
   @override
   void dispose() {

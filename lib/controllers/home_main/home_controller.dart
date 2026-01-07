@@ -62,25 +62,35 @@ class HomeController extends BaseController{
     required int page,
     required int pageSize,
   }) async {
-    final url =
-        '$getALLUsers?pageSize=$pageSize&currentPage=$page';
+    try{
+      final url =
+          '$getALLUsers?pageSize=$pageSize&currentPage=$page';
+      final res =await http.get(Uri.parse(url));
 
-    final res =await http.get(Uri.parse(url));
 
-    if (res.statusCode == 200) {
-      final List data = json.decode(res.body)['data'];
-      return data.map((e) => UserModel.fromJson(e)).toList();
+      if (res.statusCode == 200) {
+        final List data = json.decode(res.body)['data'];
+        return data.map((e) => UserModel.fromJson(e)).toList();
+      }else{
+        showSnackBar('Something went wrong!', Get.context);
+      }
+    } on Exception catch (_){
+    showSnackBar('Please check your network connection.', Get.context);
     }
     throw Exception('Failed to load users');
   }
 
   Future<UserModel> fetchUserById(String id) async {
+    try{
+      final res = await http.get(Uri.parse('$getALLUsers?id=$id'));
 
-    final res = await http.get(Uri.parse('$getALLUsers?id=$id'));
-    print("resbody: ${res.body}");
-
-    if (res.statusCode == 200) {
-      return UserModel.fromJson(json.decode(res.body));
+      if (res.statusCode == 200) {
+        return UserModel.fromJson(json.decode(res.body));
+      }else{
+        showSnackBar('', Get.context);
+      }
+    }on Exception catch (_){
+      showSnackBar('Please check your network connection.', Get.context);
     }
     throw Exception('User not found');
   }

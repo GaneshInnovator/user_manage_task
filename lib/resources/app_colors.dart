@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static Color screenBGColor = const Color(0xFFfbeaed);
+  static Color screenBGColor = const Color(0xFFfcf0f2);
 
   static Color white =  const Color(0xFFFFFFFF);
 
@@ -34,7 +34,7 @@ class AppColors {
   changeToLight() {
     primaryColor = const Color(0xFFD72846);
     secondaryColor = const Color(0xFF24DBD4);
-    screenBGColor = const Color(0xFFfbeaed);
+    screenBGColor = const Color(0xFFfcf0f2);
     textColor = const Color(0xFF161616);
     white = const Color(0xFFFFFFFF);
     black = const Color(0xFF000000);

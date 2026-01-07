@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:usermanage_app/constant.dart';
 import 'package:usermanage_app/controllers/base_controller.dart';
@@ -17,7 +18,12 @@ class UpdateController extends BaseController {
   final email = ''.obs;
   final age = ''.obs;
   final gender = ''.obs;
+  var deleteResult = false;
+  var updateResult = false;
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   Future<void> fetchUsersProfile(String userId) async {
     try {
       isLoading.value = true;
@@ -35,13 +41,17 @@ class UpdateController extends BaseController {
         email.value = data['email'];
         age.value = data['age'].toString();
         gender.value = data['gender'];
+
+        nameController.text = data['name'].toString();
+        ageController.text = data['email'].toString();
+        emailController.text = data['age'].toString();
       }
     } finally {
       isLoading.value = false;
     }
   }
 
-  Future<void> updateUser(String id) async {
+  Future<void> updateUser(String id, BuildContext context) async {
     try {
       isLoading.value = true;
 
@@ -58,14 +68,19 @@ class UpdateController extends BaseController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar('Success', 'User updated');
+        updateResult = true;
+        showSnackBar('User Updated Successfully', context);
+      }else{
+        showSnackBar('Something went wrong!', context);
       }
+    } on Exception catch (_){
+      showSnackBar('Please check your network connection.', context);
     } finally {
       isLoading.value = false;
     }
   }
 
-  Future<void> deleteUser(String id) async {
+  Future<void> deleteUser(String id, BuildContext context) async {
     try {
       isLoading.value = true;
 
@@ -75,9 +90,15 @@ class UpdateController extends BaseController {
       );
 
       if (response.statusCode == 200) {
-        Get.back();
-        Get.snackbar('Deleted', 'User removed successfully');
+        deleteResult = true;
+        Get.back(result: deleteResult);
+        showSnackBar('User removed successfully', context);
+      }else{
+        deleteResult = false;
+        showSnackBar('Something went wrong!', context);
       }
+    }on Exception catch (_){
+      showSnackBar('Please check your network connection.', context);
     } finally {
       isLoading.value = false;
     }
