@@ -4,11 +4,11 @@ A User Manage app flutter project.
 
 ## 📌 Project Overview
 
-This project is a **User Management Application** built using **Flutter (GetX)** for the frontend and **Firebase Realtime Database** with **Vercel Serverless APIs** for the backend.
+This project is a **User Management Application** built using **Flutter (GetX)** for the frontend and **Firebase Realtime Database** with **Serverless APIs** for the backend.
 
 The application supports **full CRUD operations** (Create, Read, Update, Delete) with **pagination-based user listing** and **individual user profile management**.
 
-The backend is deployed as **serverless REST APIs on Vercel**, ensuring scalability and fast response times, while the frontend follows a **clean architecture** with proper state management using **GetX (Obx)**.
+The backend is deployed as **serverless REST APIs**, ensuring scalability and fast response times, while the frontend follows a **clean architecture** with proper state management using **GetX (Obx)**.
 
 ![Light Theme Screen](https://github.com/GaneshInnovator/sample-images/blob/1c5943840db55eebf9af9d2115a0df4d9e1f66f5/Light%20theme%20Screens/1.png?raw=true)
 
@@ -261,6 +261,7 @@ Follow these steps to generate a **signed release APK**.
 - After gradle sync to click the top tool build -> generate signed app budle
 
 - Note: Keystore folder contain the keystore jks file and password information.
+
 
 
 
