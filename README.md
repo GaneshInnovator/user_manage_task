@@ -10,6 +10,11 @@ The application supports **full CRUD operations** (Create, Read, Update, Delete)
 
 The backend is deployed as **serverless REST APIs on Vercel**, ensuring scalability and fast response times, while the frontend follows a **clean architecture** with proper state management using **GetX (Obx)**.
 
+![Light Theme Screen](https://raw.githubusercontent.com/GaneshInnovator/sample-images/refs/heads/main/Light%20theme%20Screens/1.png)
+
+![Dark Theme Screen 2](https://raw.githubusercontent.com/GaneshInnovator/sample-images/1c5943840db55eebf9af9d2115a0df4d9e1f66f5/Light%20theme%20Screens/2.png)
+
+
 - App Link: https://drive.google.com/file/d/1DCX3N3FYWQf4vndvwsmgypXfx_rG2oWn/view?usp=drive_link
 
 ---
@@ -256,4 +261,5 @@ Follow these steps to generate a **signed release APK**.
 - After gradle sync to click the top tool build -> generate signed app budle
 
 - Note: Keystore folder contain the keystore jks file and password information.
+
 
