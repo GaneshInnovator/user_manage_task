@@ -4,18 +4,10 @@ class AppPreference {
   var pref = GetSecureStorage();
 
   @override
-  String? get authToken => pref.read("authToken") ?? "";
+  String? get themeValue => pref.read("themeValue") ?? "auto";
 
   @override
-  set authToken(String? _authToken) {
-    pref.write("authToken", _authToken);
-  }
-
-  @override
-  String? get userID => pref.read("userID") ?? "";
-
-  @override
-  set userID(String? userID) {
-    pref.write("userID", userID);
+  set themeValue(String? _themeValue) {
+    pref.write("themeValue", _themeValue);
   }
 }

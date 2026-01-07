@@ -37,6 +37,7 @@ class App  extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: APP_NAME,
+      defaultTransition: Transition.leftToRight,
       home: const SplashScreen(),
       initialBinding: MainBinding(),
     );
@@ -49,7 +50,7 @@ class App  extends StatelessWidget {
         leadingWidth: 80,
         forceMaterialTransparency: true,
         leading: Container(
-            margin:  EdgeInsetsDirectional.only(start: 20.0, top:bottomWidget !=null ? 10.0:0.0),
+            margin:  EdgeInsetsDirectional.only(start: 16.0, top:bottomWidget !=null ? 10.0:0.0),
             alignment: AlignmentDirectional.centerStart,
             child: widget ?? (isBackButtonNeeded!
                 ? InkWell(
@@ -63,7 +64,6 @@ class App  extends StatelessWidget {
               child: Container(
                   width: 40,
                   height: 40,
-
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: AppColors.white,
@@ -71,7 +71,7 @@ class App  extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                           color: AppColors.white,
-                          offset: const Offset(0.0, 1.0), //(x,y)
+                          offset: const Offset(0.0, 1.0),
                           blurRadius: 10.0,
                           spreadRadius: 1),
                     ],
@@ -81,10 +81,24 @@ class App  extends StatelessWidget {
                       height: 20,
                       child: SvgPicture.asset(Bidi.isRtlLanguage(Get.locale?.languageCode)
                           ? rightArrowSvg:arrowBackSvg,
-                        colorFilter: ColorFilter.mode(AppColors.iconBgColor, BlendMode.srcIn),))
+                        colorFilter: ColorFilter.mode(AppColors.iconBgColor, BlendMode.srcIn),)
+                  )
               ),
             )
-                : Container())
+                : InkWell(
+              onTap: () {
+                if (function != null) {
+                  function();
+                } else {
+                  Get.back();
+                }
+              },
+              child: SizedBox(
+                  width: 22,
+                  height: 22,
+                  child: SvgPicture.asset(AppImages.themeSettingsSvg,
+                    colorFilter: ColorFilter.mode(AppColors.iconBgColor, BlendMode.srcIn),)),
+            ))
         ),
         title: (title != null)
             ? Text(title,

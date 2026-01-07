@@ -1,10 +1,22 @@
 
 
+import 'package:get/get.dart';
+import 'package:usermanage_app/controllers/base_controller.dart';
+
 var APP_NAME = "User Manage";
 
 //API URL
-const BASE_URL= "https://api.virgincodes.com";
+const BASE_API_URL= "https://user-manage-liard.vercel.app/api";
 
-//API
-const getALLProducts = "$BASE_URL/deleteUser";
-const searchProducts = "$BASE_URL/send-otp";
+//API ENDPOINTS
+const getALLUsers = "$BASE_API_URL/users";
+
+const createUserUrl = "$BASE_API_URL/createUser";
+
+const deleteUserById = "$BASE_API_URL/deleteUser";
+
+const updateUserById = "$BASE_API_URL/updateUser";
+
+var themeValue = "auto".obs;
+
+BaseController baseController = BaseController();

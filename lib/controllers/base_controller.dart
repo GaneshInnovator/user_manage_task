@@ -5,10 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:usermanage_app/constant.dart';
 
+import '../app.dart';
 import '../resources/app_assets.dart';
 import '../resources/app_colors.dart';
 import '../resources/app_fonts.dart';
+import '../resources/app_style.dart';
 import '../utils/lottie_delegates.dart';
 import 'package:intl/intl.dart';
 
@@ -36,6 +39,7 @@ class BaseController extends FullLifeCycleController with FullLifeCycleMixin {
         duration: const Duration(milliseconds: 2000),
       ));
   }
+
 
   showDeleteSnackBar(String msg, context) {
     ScaffoldMessenger.of(context)
@@ -112,20 +116,22 @@ class BaseController extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
 
-  Widget showCenterLoading(context, [loadingFile, Size]) {
-    return Container(
-      width: Size ?? MediaQuery.of(context).size.width,
-      height: Size ?? MediaQuery.of(context).size.height,
-      color: Colors.transparent,
-      child: Center(
-        child: SizedBox(
-            width: Size ?? 150,
-            height: Size ?? 150,
-            child: Lottie.asset(
-              loadingFile ?? AppImages.lottieloader,
-              delegates: getLottieDelegates(loadingFile ?? AppImages.lottieloader),
-            )),
-      ),
+  Widget showCenterLoading(context, Color? color, [loadingFile, Size]) {
+    return Obx(
+        ()=> isLoading.value? Container(
+        width: Size ?? MediaQuery.of(context).size.width,
+        height: Size ?? MediaQuery.of(context).size.height,
+        color: color ?? Colors.transparent,
+        child: Center(
+          child: SizedBox(
+              width: Size ?? 150,
+              height: Size ?? 150,
+              child: Lottie.asset(
+                loadingFile ?? AppImages.lottieloader,
+                delegates: getLottieDelegates(loadingFile ?? AppImages.lottieloader),
+              )),
+        ),
+      ): SizedBox.shrink(),
     );
   }
 
@@ -170,6 +176,30 @@ class BaseController extends FullLifeCycleController with FullLifeCycleMixin {
 
   bool isDirectionRTL(BuildContext context) {
     return Bidi.isRtlLanguage(Get.locale?.languageCode);
+  }
+
+  bool isDarkMode(){
+    final brightness =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    return (brightness == Brightness.dark && App().appPreference.themeValue == "auto") || App().appPreference.themeValue == "dark";
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    if (themeValue.value == "auto") {
+      final Brightness brightness =
+          WidgetsBinding.instance.platformDispatcher.platformBrightness;
+      if (brightness == Brightness.dark) {
+        AppStyles.darkTheme();
+        AppColors().changeToDark();
+        AppImages().changeToDarkImage();
+      } else {
+        AppStyles.lightTheme();
+        AppColors().changeToLight();
+        AppImages().changeToLightImage();
+      }
+      Get.forceAppUpdate();
+    }
   }
 
   @override

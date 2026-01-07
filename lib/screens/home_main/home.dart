@@ -1,8 +1,23 @@
+import 'dart:async';
+
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:usermanage_app/binding/user_binding.dart';
+import 'package:usermanage_app/constant.dart';
 import 'package:usermanage_app/controllers/home_main/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:usermanage_app/resources/app_assets.dart';
+import 'package:usermanage_app/resources/app_colors.dart';
+import 'package:usermanage_app/resources/app_dimen.dart';
+import 'package:usermanage_app/resources/app_fonts.dart';
+import 'package:usermanage_app/screens/create_user/create_user.dart';
+import 'package:usermanage_app/widgtes/custom_container.dart';
+import 'package:usermanage_app/widgtes/custom_scaffold.dart';
 
+import '../../app.dart';
 import '../../model/user_fetch_model.dart';
+import '../../widgtes/theme_tile.dart';
+import '../update_user/update_user.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,393 +28,274 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeController controller = Get.find();
-  final TextEditingController _searchCtrl = TextEditingController();
-
-  List<UserFetchModel> products = [];
-  bool loading = false;
-  String currentSearch = '';
-  int _selectedIndex = 0;
-  String? errorMessage;
+  final ScrollController scrollController = ScrollController();
+  Timer? _scrollEndTimer;
+  var showWidget = true.obs;
 
   @override
   void initState() {
-    initOperation();
-    super.initState();
-  }
+    controller.fetchUsersModel();
 
-  initOperation ()async {
-    products = await controller.fetchAllProducts(search: '');
-    setState(() => loading = false);
-  }
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        controller.fetchUsersModel();
+      }
 
-  Future<void> fetch({String search = ''}) async {
-    if (search.trim().isEmpty) {
-      controller.fetchProducts();
-      return;
-    }
+      _scrollEndTimer?.cancel();
 
-    try {
-      products = await controller.fetchProducts(search: search);
-      setState(() => loading = false);
-    } catch (e) {
-      setState(() {
-        loading = false;
-        errorMessage = 'Failed to load products. Please try again.';
+      _scrollEndTimer = Timer(const Duration(milliseconds: 200), () {
+          showWidget.value = true;
       });
-      print('Error fetching products: $e');
-    }
-  }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
+        showWidget.value = false;
     });
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(56),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          flexibleSpace: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  // Logo
-                  const Text(
-                    'SEPHORA',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
+    return Obx(
+      ()=> Stack(
+        children: [
+          CustomScaffold(
+            isShowAppBar : true,
+              title: APP_NAME,
+              appBarContent: APP_NAME,
+            isBackButtonNeeded: false,
+            customAppBarFunction: (){
+              showThemeBottomSheet(context);
+            },
+            action: showAction(),
+            body: bodyContent(),
+          ),
+          showBottomAdd(),
+          controller.showCenterLoading(context, Colors.transparent),
+        ],
+      ),
+    );
+  }
 
-                  // Search Bar
-                  Expanded(
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: TextField(
-                        controller: _searchCtrl,
-                        decoration: InputDecoration(
-                          hintText: 'Search',
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 14,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.grey.shade600,
-                            size: 20,
-                          ),
-                          suffixIcon: _searchCtrl.text.isNotEmpty
-                              ? IconButton(
-                            icon: Icon(
-                              Icons.clear,
-                              color: Colors.grey.shade600,
-                              size: 18,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _searchCtrl.clear();
-                                products = [];
-                                currentSearch = '';
-                                errorMessage = null;
-                              });
-                            },
-                          )
-                              : null,
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-                        ),
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                        onSubmitted: (value) {
-                          if (value.isNotEmpty) fetch(search: value);
-                        },
-                      ),
-                    ),
+  Widget showBottomAdd(){
+    return Visibility(
+      visible: showWidget.value && !controller.isLoading.value,
+      child: Positioned(
+        bottom: 25,
+        left: 0,
+        right: 0,
+        child: Center(
+            child: GestureDetector(
+              onTap: (){
+                Get.to(CreateUserScreen(), binding: UserBinding())?.then((val){
+                  if(val == true){
+                    controller.retry = true;
+                    controller.hasMore.value = true;
+                    controller.page = 1;
+                    controller.fetchUsersModel();
+                  }
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(color: AppColors.black, width: 1.8),
+                ),
+                child: Container(
+                  height: Get.height * 0.05,
+                  width: Get.width * 0.24,
+                  decoration: BoxDecoration(
+                    color: AppColors.secondaryColor,
+                    borderRadius: BorderRadius.circular(26),
                   ),
-
-                  // Icons
-                  IconButton(
-                    icon: const Icon(Icons.favorite_border, color: Colors.black),
-                    onPressed: () {},
-                  ),
-                  Stack(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.shopping_bag_outlined, color: Colors.black),
-                        onPressed: () {},
+                      Icon(
+                        Icons.add_sharp,
+                        color: AppColors.constWhite,
                       ),
-                      Positioned(
-                        right: 6,
-                        top: 6,
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 18,
-                            minHeight: 18,
-                          ),
-                          child: const Text(
-                            '1',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                      Text(
+                        "ADD",
+                        style: TextStyle(
+                            color: AppColors.constWhite,
+                            fontSize: AppDimen.textSizeH4,
+                          decoration: TextDecoration.none,
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Divider
-          Divider(height: 1, color: Colors.grey.shade300),
-
-          // Results Count or Search Prompt
-          if (currentSearch.isNotEmpty && !loading)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Text(
-                '${products.length} Results for "$currentSearch"',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey.shade700,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
+            )
 
-          // Main Content Area
-          Expanded(
-            child: _buildContent(),
-          ),
-        ],
-      ),
-
-      // Bottom Navigation Bar
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 8,
-              offset: const Offset(0, -1),
-            ),
-          ],
-        ),
-        child: SafeArea(
-          child: SizedBox(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(Icons.home_outlined, 'Home', 0),
-                _buildNavItem(Icons.shopping_bag_outlined, 'Basket', 1),
-                _buildNavItem(Icons.local_offer_outlined, 'Offers', 2),
-                _buildNavItem(Icons.person_outline, 'Me', 3),
-                _buildNavItem(Icons.card_giftcard_outlined, 'Gifts', 4),
-              ],
-            ),
-          ),
         ),
       ),
     );
   }
 
-  Widget _buildContent() {
-    if (loading) {
-      return const Center(
-        child: CircularProgressIndicator(
-          color: Colors.black,
-          strokeWidth: 2,
-        ),
-      );
-    }
+  Widget showAction(){
+    return IconButton(onPressed: (){
+      controller.retry = true;
+      controller.hasMore.value = true;
+      controller.page = 1;
+      controller.fetchUsersModel();
+    }, icon: Icon(Icons.refresh_outlined, size: 28, color: AppColors.iconBgColor,));
+  }
+  
+  Widget bodyContent(){
+    return Obx(() {
+      return controller.users.isNotEmpty ?ListView.builder(
+        controller: scrollController,
+        itemCount: controller.users.length + 1,
+        itemBuilder: (context, index) {
+          if (index == controller.users.length) {
+            return const SizedBox();
+          }
 
-    if (errorMessage != null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.error_outline,
-                size: 64,
-                color: Colors.grey.shade400,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                errorMessage!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade700,
-                ),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  if (currentSearch.isNotEmpty) {
-                    fetch(search: currentSearch);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 12,
-                  ),
-                ),
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+          final user = controller.users[index];
 
-    // if (currentSearch.isEmpty) {
-    //   return Center(
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(24),
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           Icon(
-    //             Icons.search,
-    //             size: 64,
-    //             color: Colors.grey.shade300,
-    //           ),
-    //           const SizedBox(height: 16),
-    //           Text(
-    //             'Search for products',
-    //             style: TextStyle(
-    //               fontSize: 18,
-    //               fontWeight: FontWeight.w600,
-    //               color: Colors.grey.shade700,
-    //             ),
-    //           ),
-    //           const SizedBox(height: 8),
-    //           Text(
-    //             'Enter a keyword to find what you\'re looking for',
-    //             textAlign: TextAlign.center,
-    //             style: TextStyle(
-    //               fontSize: 14,
-    //               color: Colors.grey.shade600,
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    // }
-
-    if (products.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.inbox_outlined,
-                size: 64,
+          return Card(
+            elevation: 0,
+            margin: const EdgeInsets.all(10),
+            color: AppColors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(22),
+              side: BorderSide(
                 color: Colors.grey.shade300,
+                width: 1,
               ),
-              const SizedBox(height: 16),
-              Text(
-                'No results found',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade700,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Try searching with different keywords',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+            ),
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              trailing: Text(
+                'View & update',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFont.font,
+                  decorationColor: AppColors.secondaryColor,
+                  fontSize: AppDimen.textSizeH1
+                ),
+              ),
+              title: Text(
+                user.name,
+                style: TextStyle(fontWeight: FontWeight.w600, fontFamily: AppFont.font, color: AppColors.black),
+              ),
+              subtitle: Text(user.email, style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.black, fontFamily: AppFont.font),),
+              onTap: () {
+                controller.userId.value = user.id;
+                Get.to(() => UserProfileScreen(userId: user.id), binding: UserBinding())?.then((value){
+                  if(value == true){
+                    controller.retry = true;
+                    controller.hasMore.value = true;
+                    controller.page = 1;
+                    controller.fetchUsersModel();
+                  }
+                });
+              },
+            ),
+          );
+
+        },
+      ): controller.isLoading.value ? SizedBox.shrink(): showEmptyWidget();
+
+    }
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
-    final isSelected = _selectedIndex == index;
-    return InkWell(
-      onTap: () => _onItemTapped(index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.black : Colors.grey.shade600,
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 11,
-                color: isSelected ? Colors.black : Colors.grey.shade600,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-          ],
+  Widget showEmptyWidget(){
+    return Center(
+      child: CustomContainer(
+        body: SvgPicture.asset(
+          AppImages.noUserSvg,
+          height: Get.height * 0.29,
+          width: Get.width,
         ),
       ),
+    );
+  }
+
+  void showThemeBottomSheet(BuildContext context) {
+    Get.bottomSheet(
+      Obx(
+            () => themeValue.value != null?Container(
+          decoration:  BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(16),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              ThemeTile(
+                icon: Icons.brightness_auto,
+                label: 'Auto',
+                onSelected:
+                App().appPreference.themeValue == "auto",
+                onTap: () {
+                  controller.updateTheme("auto", Get.context!);
+                  Get.back();
+                },
+              ),
+
+              const Divider(height: 1),
+
+              ThemeTile(
+                icon: Icons.light_mode,
+                label: 'Light',
+                onSelected:
+                App().appPreference.themeValue == "light",
+                onTap: () {
+                  controller.updateTheme("light", Get.context!);
+                  Get.back();
+                },
+              ),
+
+              const Divider(height: 1),
+
+              ThemeTile(
+                icon: Icons.dark_mode,
+                label: 'Dark',
+                onSelected:
+                App().appPreference.themeValue == "dark",
+                onTap: () {
+                  controller.updateTheme("dark", Get.context!);
+                  Get.back();
+                },
+              ),
+
+              const SizedBox(height: 16),
+            ],
+          ),
+        ): SizedBox.shrink(),
+      ),
+      isScrollControlled: true,
     );
   }
 
   @override
   void dispose() {
-    _searchCtrl.dispose();
     super.dispose();
   }
 }

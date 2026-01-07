@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../constant.dart';
 import 'app_colors.dart';
 import 'app_dimen.dart';
 import 'app_fonts.dart';
 
 class AppStyles {
   static ThemeData lightTheme() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
     final ThemeData base = ThemeData.light();
     Map<int, Color> color = {
       50: const Color.fromRGBO(136, 14, 79, .1),
@@ -90,6 +97,12 @@ class AppStyles {
   }
 
   static ThemeData darkTheme() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
     final ThemeData base = ThemeData.dark();
     Map<int, Color> color = {
       50: const Color.fromRGBO(136, 14, 79, .1),

@@ -3,27 +3,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static var linksColor = {"color": "blue"};
+  static Color screenBGColor = const Color(0xFFfcf0f2);
 
-  //background Color
-  static Color screenBGColor = const Color(0xFFFFFEF4);
-
-  //foreground Color
   static Color white =  const Color(0xFFFFFFFF);
 
-  //TextColor
   static Color black = const Color(0xFF000000);
   static Color textColor = const Color(0xFF161616);
 
-  //Button Text Color
   static Color constWhite = const Color(0xFFFFFFFF);
-  static Color bottomButtonTextColor = const Color(0xFFFFFFFF);
 
-  //buttonColor Changed in Bottom_button.dart file
-  static Color primaryColor = const Color(0xFFDFA32A);
+  static Color primaryColor = const Color(0xFFD72846);
 
-  //Icon Color
-  static Color iconBgColor = const Color(0xFF000000); //0xFFF6F6F6
+  static Color secondaryColor = const Color(0xFF24DBD4);
+
+  static Color iconBgColor = const Color(0xFF000000);
 
 
   static Color hintTextColor = const Color(0xFF969696);
@@ -39,12 +32,11 @@ class AppColors {
 
 
   changeToLight() {
-    linksColor = {"color": "blue"};
-    primaryColor = const Color(0xFFDFA32A);
-    screenBGColor = const Color(0xFFFFFEF4);
+    primaryColor = const Color(0xFFD72846);
+    secondaryColor = const Color(0xFF24DBD4);
+    screenBGColor = const Color(0xFFfcf0f2);
     textColor = const Color(0xFF161616);
     white = const Color(0xFFFFFFFF);
-    bottomButtonTextColor = const Color(0xFFFFFFFF);
     black = const Color(0xFF000000);
     iconBgColor = const Color(0xFF000000);
     hintTextColor = const Color(0xFF969696);
@@ -53,11 +45,10 @@ class AppColors {
   }
 
   changeToDark() {
-    linksColor = {"color": "red"};
-    primaryColor = const Color(0xFFDFA32A);
+    primaryColor = const Color(0xFFD72846);
+    secondaryColor = const Color(0xFF24DBD4);
     screenBGColor = const Color(0xFF171D37);
     white = const Color(0xFF0E142F);
-    bottomButtonTextColor = const Color(0xFF0E142F);
     textColor = const Color(0xFFC7D8EB);
     black = const Color(0xFFF6F6F6);
     iconBgColor = const Color(0xFFF6F6F6);
