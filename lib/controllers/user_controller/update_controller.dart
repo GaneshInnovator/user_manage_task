@@ -43,8 +43,8 @@ class UpdateController extends BaseController {
         gender.value = data['gender'];
 
         nameController.text = data['name'].toString();
-        ageController.text = data['email'].toString();
-        emailController.text = data['age'].toString();
+        emailController.text = data['email'].toString();
+        ageController.text = data['age'].toString();
       }
     } finally {
       isLoading.value = false;
