@@ -10,6 +10,8 @@ The application supports **full CRUD operations** (Create, Read, Update, Delete)
 
 The backend is deployed as **serverless REST APIs on Vercel**, ensuring scalability and fast response times, while the frontend follows a **clean architecture** with proper state management using **GetX (Obx)**.
 
+- App Link: https://drive.google.com/file/d/1DCX3N3FYWQf4vndvwsmgypXfx_rG2oWn/view?usp=drive_link
+
 ---
 
 ## 🛠 Tech Stack
@@ -210,8 +212,19 @@ Stores all static resources used in the app.
 
 Includes:
 - `assets/lottie/` – Lottie animation files
-- `assets/fonts/` – Font files
-- `assets/res/` – SVG and PNG assets for UI usage
+- `project/fonts/` – Font files
+- `project/res/` – SVG and PNG assets for UI usage
+
+### 📌 `keystore/`
+Contains files related to Android app signing.
+
+Includes:
+- `keystore.jks` – Android signing keystore file
+- Playstore app submission aab file generate and apk file generate for testing
+- `README.md` – Contains keystore configuration details:
+  - Key alias name
+  - Key alias password
+  - Keystore password
 
 ## 🚀 Steps to Setup and Run the Project Locally
 
@@ -225,20 +238,21 @@ Ensure the following are installed on your system:
 ---
 
 ### 2️.Clone the Repository
-git clone <our-github-repo-url>/n
-cd <project-folder-name>
+- git clone https://github.com/GaneshInnovator/user_manage_task.git
+- cd user_manage_task
 
 ### 3.Install Dependecies
-flutter pub get
+- flutter pub get
 
 ### 3.Run the project
-connect your device/n
-flutter pub run
+- flutter pub run
 
+## 📦 Build APK with Keystore (Release)
 
+Follow these steps to generate a **signed release APK**.
 
+### 1️⃣ Configure Keystore
+- Open android level project
+- After gradle sync to click the top tool build -> generate signed app budle
 
-
-
-
-
+- Note: Keystore folder contain the keystore jks file and password information.
