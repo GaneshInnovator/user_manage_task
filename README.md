@@ -233,7 +233,7 @@ Includes:
 
 ## 🚀 Steps to Setup and Run the Project Locally
 
-### 1️.Prerequisites
+### 1.Prerequisites
 Ensure the following are installed on your system:
 
 - Flutter SDK - v3.35.4
@@ -242,15 +242,15 @@ Ensure the following are installed on your system:
 
 ---
 
-### 2️.Clone the Repository
+### 2.Clone the Repository
 - git clone https://github.com/GaneshInnovator/user_manage_task.git
 - cd user_manage_task
 
 ### 3.Install Dependecies
 - flutter pub get
 
-### 3.Run the project
-- flutter pub run
+### 4.Run the project
+- flutter run
 
 ## 📦 Build APK with Keystore (Release)
 
@@ -261,9 +261,4 @@ Follow these steps to generate a **signed release APK**.
 - After gradle sync to click the top tool build -> generate signed app budle
 
 - Note: Keystore folder contain the keystore jks file and password information.
-
-
-
-
-
 
