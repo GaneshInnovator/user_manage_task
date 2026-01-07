@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:usermanage_app/controllers/user_controller/create_user_controller.dart';
+import 'package:usermanage_app/widgtes/custom_scaffold.dart';
 
 class CreateUserScreen extends StatefulWidget {
   const CreateUserScreen({super.key});
@@ -59,12 +60,9 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        title: const Text('Create User'),
-        centerTitle: true,
-      ),
+    return CustomScaffold(
+      isShowAppBar: true,
+      title: "Create User",
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

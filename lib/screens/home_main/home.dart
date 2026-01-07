@@ -9,10 +9,11 @@ import 'package:usermanage_app/resources/app_colors.dart';
 import 'package:usermanage_app/resources/app_dimen.dart';
 import 'package:usermanage_app/resources/app_fonts.dart';
 import 'package:usermanage_app/screens/create_user/create_user.dart';
-import 'package:usermanage_app/widgtes/custom_container.dart';
 import 'package:usermanage_app/widgtes/custom_scaffold.dart';
 
+import '../../app.dart';
 import '../../model/user_fetch_model.dart';
+import '../../widgtes/theme_tile.dart';
 import '../update_user/update_user.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,6 +60,10 @@ class _HomePageState extends State<HomePage> {
             isShowAppBar : true,
               title: APP_NAME,
               appBarContent: APP_NAME,
+            isBackButtonNeeded: false,
+            customAppBarFunction: (){
+              showThemeBottomSheet(context);
+            },
             action: showAction(),
             body: bodyContent(),
           ),
@@ -124,7 +129,7 @@ class _HomePageState extends State<HomePage> {
       controller.hasMore.value = true;
       controller.page = 1;
       controller.fetchUsersModel();
-    }, icon: Icon(Icons.refresh_outlined));
+    }, icon: Icon(Icons.refresh_outlined, size: 28,));
   }
   
   Widget bodyContent(){
@@ -183,6 +188,79 @@ class _HomePageState extends State<HomePage> {
       );
     });
   }
+
+  void showThemeBottomSheet(BuildContext context) {
+    Get.bottomSheet(
+      Obx(
+            () => themeValue.value != null?Container(
+          decoration:  BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(16),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              ThemeTile(
+                icon: Icons.brightness_auto,
+                label: 'Auto',
+                onSelected:
+                App().appPreference.themeValue == "auto",
+                onTap: () {
+                  controller.updateTheme("auto", Get.context!);
+                  Get.back();
+                },
+              ),
+
+              const Divider(height: 1),
+
+              ThemeTile(
+                icon: Icons.light_mode,
+                label: 'Light',
+                onSelected:
+                App().appPreference.themeValue == "light",
+                onTap: () {
+                  controller.updateTheme("light", Get.context!);
+                  Get.back();
+                },
+              ),
+
+              const Divider(height: 1),
+
+              ThemeTile(
+                icon: Icons.dark_mode,
+                label: 'Dark',
+                onSelected:
+                App().appPreference.themeValue == "dark",
+                onTap: () {
+                  controller.updateTheme("dark", Get.context!);
+                  Get.back();
+                },
+              ),
+
+              const SizedBox(height: 16),
+            ],
+          ),
+        ): SizedBox.shrink(),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
 
 
   @override

@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:usermanage_app/app.dart';
 import 'package:usermanage_app/constant.dart';
 import 'package:http/http.dart' as http;
+import 'package:usermanage_app/resources/app_assets.dart';
+import 'package:usermanage_app/resources/app_colors.dart';
+import 'package:usermanage_app/resources/app_style.dart';
 import '../../model/user_fetch_model.dart';
 import '../base_controller.dart';
 
@@ -78,6 +83,36 @@ class HomeController extends BaseController{
       return UserModel.fromJson(json.decode(res.body));
     }
     throw Exception('User not found');
+  }
+
+  updateTheme(String theme, BuildContext context){
+    if(theme == "auto"){
+      App().appPreference.themeValue = "auto";
+      themeValue.value = "auto";
+      final brightness = MediaQuery.of(context).platformBrightness;
+      if (brightness == Brightness.dark) {
+        AppStyles.darkTheme();
+        AppColors().changeToDark();
+        AppImages().changeToDarkImage();
+      } else {
+        AppStyles.lightTheme();
+        AppColors().changeToLight();
+        AppImages().changeToLightImage();
+      }
+    }else if(theme == "light"){
+      App().appPreference.themeValue = "light";
+      themeValue.value = "light";
+      AppStyles.lightTheme();
+      AppColors().changeToLight();
+      AppImages().changeToLightImage();
+    }else{
+      App().appPreference.themeValue = "dark";
+      themeValue.value = "dark";
+      AppStyles.darkTheme();
+      AppColors().changeToDark();
+      AppImages().changeToDarkImage();
+    }
+    Get.forceAppUpdate();
   }
 
 }

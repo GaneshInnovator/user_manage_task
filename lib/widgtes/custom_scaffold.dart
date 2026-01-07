@@ -64,6 +64,12 @@ class CustomScaffoldState extends State<CustomScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: baseController.isDarkMode() ? Brightness.light: Brightness.dark,
+      ),
+    );
     return Container(
             color: AppColors.screenBGColor,
             child: SafeArea(

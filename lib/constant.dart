@@ -1,5 +1,8 @@
 
 
+import 'package:get/get.dart';
+import 'package:usermanage_app/controllers/base_controller.dart';
+
 var APP_NAME = "User Manage";
 
 //API URL
@@ -14,3 +17,6 @@ const deleteUserById = "$BASE_API_URL/deleteUser";
 
 const updateUserById = "$BASE_API_URL/updateUser";
 
+var themeValue = "auto".obs;
+
+BaseController baseController = BaseController();

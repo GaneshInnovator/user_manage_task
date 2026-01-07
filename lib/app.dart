@@ -85,7 +85,20 @@ class App  extends StatelessWidget {
                         colorFilter: ColorFilter.mode(AppColors.iconBgColor, BlendMode.srcIn),))
               ),
             )
-                : Container())
+                : InkWell(
+              onTap: () {
+                if (function != null) {
+                  function();
+                } else {
+                  Get.back();
+                }
+              },
+              child: SizedBox(
+                  width: 22,
+                  height: 22,
+                  child: SvgPicture.asset(AppImages.themeSettingsSvg,
+                    colorFilter: ColorFilter.mode(AppColors.iconBgColor, BlendMode.srcIn),)),
+            ))
         ),
         title: (title != null)
             ? Text(title,
