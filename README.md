@@ -30,16 +30,16 @@ The backend is deployed as **serverless REST APIs on Vercel**, ensuring scalabil
 
 ## ✨ Features
 
-- User creation with validated input fields
+- Light, Dark, and System Default (Auto) theme modes
+- Runtime theme switching with persistent preferences
 - User listing with pagination support
 - Fetch single user details by user ID
 - Update existing user information
 - Delete user with confirmation
+- Floating Add button hides on scroll and reappears when scrolling stops
 - Separate REST API endpoints for each operation
 - Firebase Realtime Database integration
 - GetX state management with reactive UI (`Obx`)
-- Light, Dark, and System Default (Auto) theme modes
-- Runtime theme switching with persistent preferences
 
 ## 🎨 Theme & UI Features
 
@@ -68,7 +68,7 @@ The backend is deployed as **serverless REST APIs on Vercel**, ensuring scalabil
 - GET /users?pageSize={pageSize}&currentPage={currentPage}
 - https://user-manage-liard.vercel.app/api/users?pageSize=10&currentPage=1
 
-#### ➤ Fetch Single User By Id
+#### ➤ Fetch Single User by Id
 - GET /users?id=193
 - https://user-manage-liard.vercel.app/api/users?id=193
 
@@ -256,3 +256,4 @@ Follow these steps to generate a **signed release APK**.
 - After gradle sync to click the top tool build -> generate signed app budle
 
 - Note: Keystore folder contain the keystore jks file and password information.
+
