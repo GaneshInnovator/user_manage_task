@@ -225,15 +225,16 @@ Ensure the following are installed on your system:
 ---
 
 ### 2️.Clone the Repository
-git clone <our-github-repo-url>
+git clone <our-github-repo-url>/n
 cd <project-folder-name>
 
 ### 3.Install Dependecies
 flutter pub get
 
 ### 3.Run the project
-connect your device
+connect your device/n
 flutter pub run
+
 
 
 
