@@ -2,8 +2,6 @@
 
 A User Manage app flutter project.
 
-## Project OverView
-
 ## 📌 Project Overview
 
 This project is a **User Management Application** built using **Flutter (GetX)** for the frontend and **Firebase Realtime Database** with **Vercel Serverless APIs** for the backend.
@@ -38,5 +36,6 @@ The backend is deployed as **serverless REST APIs on Vercel**, ensuring scalabil
 - Theme mode options(Auto, Dark, Light)
 - Reactive UI using GetX (`Obx`)
 - Clean and scalable architecture
+
 
 
