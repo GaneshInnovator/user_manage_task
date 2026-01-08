@@ -54,6 +54,8 @@ The backend is deployed as **serverless REST APIs**, ensuring scalability and fa
 - Runtime theme switching
 - Persistent theme preference
 - Consistent UI styling across all screens
+- Primary Color: #D72846
+- Secondary Color: #24DBD4
 
 ## 🌐 API Details
 
@@ -261,4 +263,5 @@ Follow these steps to generate a **signed release APK**.
 - After gradle sync to click the top tool build -> generate signed app budle
 
 - Note: Keystore folder contain the keystore jks file and password information.
+
 
